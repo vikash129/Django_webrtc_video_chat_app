@@ -1,0 +1,4 @@
+1.about:config
+2.media.peerconnection.ice.proxy_only : true
+3.media.getusermedia.insecure.enabled:true
+4.media.devices.insecure.enabled

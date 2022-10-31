@@ -1,0 +1,82 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href= " {% static 'chat/room.css' %}">
+{% endblock %}
+
+{% block title %}
+ <title>Welcome to    AI VideoChat</title>   
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<div class="container mt-4">
+   <h2>Welcome to    AI VideoChat</h2>
+   
+    <div >
+        <h5 >  room name : <span id = 'room'></span>  </h5>
+            <h5 >  room id : <span id = 'id'></span>  </h5>
+            <h5 >  user id : <span id = 'user_id'></span>  </h5>
+    </div>
+    
+    <div class="row justify-content-center">
+
+                <div class="col-12 col-md-5">
+                    <div class="card my_card" >
+
+                        <div class="title">
+                            <h5 >  you : <span id = 'user_name'></span>  </h5>
+                        </div>
+
+                        <div class="card-body">
+                        <video id="my_video" class="video"   muted="muted" src="{% static 'chat/v.mp4' %}"></video>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-5">
+
+                    <div class="card my_card">
+                        
+                        <div  class="title">
+                            <h5 >  friend : <span id = 'other_user_name'>Not Connected </span>  </h5>
+                        </div>
+                        
+                            <div class="card-body">
+                                <video   id="other_video" class="video"  ></video>
+                            </div>     
+                    </div>
+
+                </div>
+
+    </div>
+
+
+        <div class="row justify-content-center mt-4">
+
+        <button id="call_btn" class="btn btn-success my_btn" disabled> Call  </button>
+        <button id="mute_btn" class="btn btn-secondary my_btn">Mute</button>
+        <button id="end_btn" class="btn btn-danger my_btn" disabled>End</button>
+
+         </div>
+        
+
+</div>
+
+{{ room_name|json_script:"roomName" }}
+{{ name|json_script:"userName" }}
+{{ chat_room_id|json_script:"chat_room_id" }}
+{{ isCreated|json_script:"isCreated" }}
+
+
+{% endblock %}
+
+{% block js %}
+
+    <script src="{% static 'chat/room.js' %}"> </script>
+{% endblock %}
