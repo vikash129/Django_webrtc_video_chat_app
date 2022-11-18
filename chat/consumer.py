@@ -20,28 +20,29 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         print('connect')
 
 
-        self.room_name = self.scope['url_route']['kwargs']['room_name'] #'url_route': {'args': (), 'kwargs': {'self.room_name': 'mk'}}}
-        self.user_name = self.scope['url_route']['kwargs']['user_name'] 
+        self.room_name = "_".join(self.scope['url_route']['kwargs']['room_name'].split())   #'url_route': {'args': (), 'kwargs': {'self.room_name': 'mk'}}}
+        self.user_name = "_".join(self.scope['url_route']['kwargs']['user_name'].split() )
         self.isCreated = False  if self.scope['url_route']['kwargs']['choice'] == "join" else True 
 
         # print(self.room_name , self.user_name , self.isCreated)
         
         self.room , _  = Room.objects.get_or_create( name = self.room_name)
         self.user , _= User.objects.get_or_create( name = self.user_name  , isHosted = self.isCreated  )
+
         
         self.user_id = self.user.id 
         self.room.join(self.user)
 
         await self.channel_layer.group_add(self.room_name , self.channel_name)
         await self.accept()
+
         await self.send_json( {
                 'type' : 'user_details_message' ,
                 'user_id': self.user_id ,
+                # 'room_id': self.room.id ,
+                # 'room_name': self.room_name ,
+                # 'user_name': self.user_name ,
             }  )
-
-
-
-
 
 
     async def disconnect(self, close_code):
@@ -52,7 +53,6 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         if(self.room.get_online_count() == 0 or self.isCreated ) :
             # Room.objects.filter( name = self.room_name ).delete()
             print('room is closed')
-
 
         await self.channel_layer.group_send(self.room_name,{ 
                 'type':'leave.message' ,
@@ -75,9 +75,6 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                    'user_name': self.user_name ,
                 'user_id': self.user_id ,
             })
-
-
-
 
         elif (command == 'offer'):
 

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-   <title>AI VideoChat Room</title> 
+  AI VideoChat Room 
 {% endblock %}
 
 {% block body %}
@@ -11,27 +11,23 @@
 
     <!-- <h3>IP Address : {{ user_ip }}</h3> -->
 
-
     <form method="POST" action="" class="container" id = "form_id" >
 
         {% csrf_token %}
 
-
         <div class="form-group">
-            <label for="formGroupExampleInput">Your Name</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" name="name" required/>
+            <label for="name">Your Name</label>
+            <input  type="text" class="form-control" id="name" name="name" required/>
         </div>
 
-        <div class="form-group" style="margin-top: 18px;position: relative;">
+        <div class="form-group" style="margin-top: 18px;position: relative;" required>
             <label for="example" class="form-label">What you want :</label>
 
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="choice" id="inlineRadio1" value="created" required />
+                <input class="form-check-input" type="radio" name="choice" id="inlineRadio1" value="created"  />
                 <label class="form-check-label" for="inlineRadio1">Create</label>
             </div>
 
-
-            
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="choice" id="inlineRadio2" value="join" />
                 <label class="form-check-label" for="inlineRadio2">Join</label>
@@ -40,11 +36,9 @@
 
 
         <div class="form-group">
-            <label for="formGroupExampleInput">Room Name</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" name="room" />
+            <label for="room">Room Name</label>
+            <input type="text" class="form-control" id="room" name="room" />
         </div>
-
-
 
 
         <div class="form-group row " style="top: 18px; position: relative">
@@ -54,12 +48,30 @@
         </div>
 
     </form>
+    {{ error_message|json_script:"error_message" }}
 
 
-{% endblock %}
+    {% endblock body %}
 
 
 {% block js %}
+<script>
+const error_message =  JSON.parse(document.getElementById('error_message').textContent);
 
-    <script src="{% static 'chat/index.js' %}">  </script>
-{% endblock %}
+if(error_message){
+    alert(error_message)
+}
+// document.getElementById('name').addEventListener('change' , removespace)
+// document.getElementById('room').addEventListener('change' , removespace)
+
+// function removespace(event){
+//     event.target.value =event.target.value.trim()
+//     console.log(name , room)
+// }
+
+
+
+
+</script>
+
+{% endblock js %}

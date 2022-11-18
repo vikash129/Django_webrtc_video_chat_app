@@ -1,4 +1,3 @@
-// /////////////////////////////////////////////////////////////////////////////////////////
 $(function(){
 
 const room = JSON.parse(document.getElementById('roomName').textContent);
@@ -6,7 +5,7 @@ const user = JSON.parse(document.getElementById('userName').textContent);
 const chat_room_id = JSON.parse(document.getElementById('chat_room_id').textContent);
 const choice = JSON.parse(document.getElementById('isCreated').textContent)
 const isCreated = choice == "join" ? false : true;
-
+let  isconnected = false ;
 
 const my_video = document.getElementById('my_video');
 const other_video = document.getElementById('other_video');
@@ -21,6 +20,13 @@ $('#user_name').text(user);
 
 // ////////////////////////////////////////////////////////////////////////////////
 
+if (!isconnected){
+    document.getElementById('other_body').style.backgroundColor = 'black'
+    document.getElementById('my_body').style.backgroundColor = 'black'
+}
+// else{
+//     document.getElementById('other_body').style.backgroundColor = 'transparent' 
+// }
 
 
 $("#call_btn").click( function(){
@@ -33,21 +39,24 @@ $("#end_btn").click ( function() {
     // ws.close()
     stream.getTracks()[1].enabled = false;
     stream.getTracks()[0].enabled = false;
+    isconnected = false ;
 });
 
 
 $("#mute_btn").click ( function(){
+
     // (2) [MediaStreamTrack, MediaStreamTrack]
     // MediaStreamTrack {kind: 'audio', id: 'e4a0722b-3e5e-4267-bbfe-ad6460e4e4e9', label: 'Communications - Internal Microphone (Conexant ISST Audio)', enabled: true, muted: false, …}
     // MediaStreamTrack {kind: 'video', id: '6983dc24-8af0-4f2c-b287-831be2a42a32', label: 'USB 2.0 Webcam (eb1a:299f)', enabled: true, muted: false, …}
     if (stream.getTracks()[1].enabled == true) {
         stream.getTracks()[1].enabled = false;
         stream.getTracks()[0].enabled = false;
-        mute_btn.innerText = "Unmute";
+
+        $("#mute_btn").text("Unmute");
     } else {
         stream.getTracks()[1].enabled = true;
         stream.getTracks()[0].enabled = true;
-        mute_btn.innerText = "Mute";
+        $("#mute_btn").text("Mute");
     }
 });
 
@@ -137,11 +146,13 @@ const ws = new WebSocket(protocol + "//" + location.host + "/ws/chat/" + room + 
 
 function connect() { // when connection is established
 
+   
     ws.onopen = function (e) {
         console.log('server connected')
 
         if (! isCreated) {
             ws.send(JSON.stringify({'command': 'join_room'}))
+            isconnected = true ;
         }
 
         run_my_video();
@@ -204,13 +215,15 @@ connect();
 // cross-browser, try this:
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-var vgaConstraints = {
-    video: {
-        mandatory: {
-            maxWidth: 640,
-            maxHeight: 360
-        }
-    }
+const vgaConstraints = {
+    // video: {
+    //     mandatory: {
+    //         maxWidth: 640,
+    //         maxHeight: 360
+    //     }
+    // }
+    video : true ,
+    audio : true ,
 };
 
 function successCallback(s) {

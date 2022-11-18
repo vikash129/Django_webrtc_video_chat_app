@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600&family=Josefin+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="h-100">
+    <div class="h-100" id="video_display">
+      <div id ="video_container" class="align-items-center" style="margin-top: 10%;">
+
+                <div class="local_div" id="div1" >
+              <!-- For playing local video -->
+              <video id="localVideo"  autoplay muted playsinline></video>
+          </div>
+          <div class="remote_div" id="div2">
+              <!-- For playing local audio -->
+              <video id="remoteVideo" class="" autoplay playsinline src="./v.mp4"></video>
+          </div>
+          </div>
+    </div>
+
+
+
+
+
+
+    <script>
+            var video = document.querySelector('#localVideo');
+
+          var errorCallback = function (e) {
+                console.log('Reeeejected!', e);
+            };
+
+            function successCallback(localMediaStream){
+                // video.src = window.URL.createObjectURL(localMediaStream);
+                video.srcObject = localMediaStream;
+                video.onloadeddata = function (e) { 
+                    // console.log(e)
+                     video.play();
+                
+            }
+        }
+        
+        function sourceSelected(audioSource, videoSource) {
+            var constraints = {
+            audio: {
+                optional: [{sourceId: audioSource}]
+            },
+            video: {
+                optional: [{sourceId: videoSource}]
+            }
+            };
+    
+            navigator.getUserMedia(constraints, successCallback, errorCallback);
+        }
+
+
+
+
+navigator.mediaDevices.enumerateDevices().then(function(sourceInfos) {
+
+    var audioSource = null;
+    var videoSource = null;
+
+    for (var i = 0; i != sourceInfos.length; ++i) {
+
+    var sourceInfo = sourceInfos[i];
+    
+    if (sourceInfo.kind === 'audio') {
+        console.log(sourceInfo.id, sourceInfo.label || 'microphone');
+        audioSource = sourceInfo.id;
+
+    } 
+    else if (sourceInfo.kind === 'video') {
+        console.log(sourceInfo.id, sourceInfo.label || 'camera');
+        videoSource = sourceInfo.id;
+    } 
+    else {
+        console.log('Some other kind of source: ', sourceInfo);
+    }
+    }
+
+    sourceSelected(audioSource, videoSource);
+});
+    </script>
+</body>
+</html>

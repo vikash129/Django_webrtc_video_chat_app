@@ -2,38 +2,49 @@
 {% load static %}
 
 {% block css %}
-  <link rel="stylesheet" href= " {% static 'chat/room.css' %}">
-{% endblock %}
+    <link rel="stylesheet" href=" {% static 'chat/room.css' %}">
+    {% endblock %}
 
-{% block title %}
- <title>Welcome to    AI VideoChat</title>   
-{% endblock %}
-
-
-
-{% block body %}
+    {% block title %}
+      Welcome to    AI VideoChat
+    {% endblock %}
 
 
-<div class="container mt-4">
-   <h2>Welcome to    AI VideoChat</h2>
-   
-    <div >
-        <h5 >  room name : <span id = 'room'></span>  </h5>
-            <h5 >  room id : <span id = 'id'></span>  </h5>
-            <h5 >  user id : <span id = 'user_id'></span>  </h5>
-    </div>
-    
-    <div class="row justify-content-center">
+    {% block body %}
+
+
+        <div class="container mt-4" style="height: 100vh;">
+            <h2 class="text-primary text-center">Welcome to    AI VideoChat</h2>
+
+            <div class="room_details">
+                <h5>
+                    room name :
+                    <span id='room'></span>
+                </h5>
+                <h5>
+                    room id :
+                    <span id='id'></span>
+                </h5>
+                <h5>
+                    user id :
+                    <span id='user_id'></span>
+                </h5>
+            </div>
+
+            <div class="row justify-content-center">
 
                 <div class="col-12 col-md-5">
-                    <div class="card my_card" >
+                    <div class="card my_card">
 
                         <div class="title">
-                            <h5 >  you : <span id = 'user_name'></span>  </h5>
+                            <h5>
+                                you :
+                                <span id='user_name'></span>
+                            </h5>
                         </div>
 
-                        <div class="card-body">
-                        <video id="my_video" class="video"   muted="muted" src="{% static 'chat/v.mp4' %}"></video>
+                        <div class="card-body" id="my_body" >
+                            <video id="my_video" class="video" muted="muted" ></video>
                         </div>
 
                     </div>
@@ -42,41 +53,43 @@
                 <div class="col-12 col-md-5">
 
                     <div class="card my_card">
-                        
-                        <div  class="title">
-                            <h5 >  friend : <span id = 'other_user_name'>Not Connected </span>  </h5>
+
+                        <div class="title">
+                            <h5>  friend <span id='other_user_name'> </span> </h5>
                         </div>
-                        
-                            <div class="card-body">
-                                <video   id="other_video" class="video"  ></video>
-                            </div>     
+
+                        <div class="card-body" id="other_body">
+                            <video id="other_video" class="video"></video>
+                        </div>
                     </div>
 
                 </div>
 
-    </div>
+            </div>
 
 
-        <div class="row justify-content-center mt-4">
+            <div class="row justify-content-center mt-4">
 
-        <button id="call_btn" class="btn btn-success my_btn" disabled> Call  </button>
-        <button id="mute_btn" class="btn btn-secondary my_btn">Mute</button>
-        <button id="end_btn" class="btn btn-danger my_btn" disabled>End</button>
+                <button id="call_btn" class="btn btn-success my_btn" disabled>
+                    Call
+                </button>
+                <button id="mute_btn" class="btn btn-dark my_btn">Mute</button>
+                <button id="end_btn" class="btn btn-danger my_btn" disabled>End</button>
 
-         </div>
-        
-
-</div>
-
-{{ room_name|json_script:"roomName" }}
-{{ name|json_script:"userName" }}
-{{ chat_room_id|json_script:"chat_room_id" }}
-{{ isCreated|json_script:"isCreated" }}
+            </div>
 
 
-{% endblock %}
+        </div>
 
-{% block js %}
+        {{ room_name|json_script:"roomName" }}
+        {{ name|json_script:"userName" }}
+        {{ chat_room_id|json_script:"chat_room_id" }}
+        {{ isCreated|json_script:"isCreated" }}
 
-    <script src="{% static 'chat/room.js' %}"> </script>
-{% endblock %}
+
+    {% endblock %}
+
+    {% block js %}
+
+        <script src="{% static 'chat/room.js' %}"></script>
+    {% endblock %}

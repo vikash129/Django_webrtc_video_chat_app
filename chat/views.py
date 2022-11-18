@@ -34,15 +34,14 @@ class IndexView(View):
             else:
                 return render(request, "chat/index.html" ,{ "error_message" :'room not get' } )
         else:
-            if RoomCreated :
-                return redirect( f"chat/{room_name}/created/{user_name}/{room.id}")
+            return redirect( f"chat/{room_name}/created/{user_name}/{room.id}")
 
 
-            return render(request, "chat/index.html" ,{ "error_message" :'room name already available' } )
+            # return render(request, "chat/index.html" ,{ "error_message" :'room name already available' } )
 
 
     def  get(self , request ) :
-        return render(request, "chat/index.html" , { "error_message" :'' } )
+        return render(request, "chat/index.html"  )
  
 
 
